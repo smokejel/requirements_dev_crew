@@ -1,0 +1,215 @@
+requirements_extraction_task:
+  description: >
+    Extract and analyze all requirements from the primary specification document. 
+    Use knowledge repository to understand system context, architecture, and applicable standards.
+    
+    Actions:
+    1. Search knowledge repository for system architecture and boundaries
+    2. Extract requirements from primary specification
+    3. Categorize requirements (functional, non-functional, interface, constraints)
+    4. Identify requirement dependencies and cross-references
+    5. Create structured requirement inventory with context annotations
+    
+    Primary Specification: {primary_specification}
+    Target System: {target_system}
+  expected_output: >
+    Structured requirements inventory containing:
+    - Complete list of categorized requirements
+    - System context summary from knowledge repository
+    - Requirement dependency mapping
+    - Initial quality assessment
+    - Recommendations for decomposition approach
+  agent: requirements_analyst
+  output_file: 'requirements_inventory.md'
+
+context_analysis_task:
+  description: >
+    Analyze system architecture and create comprehensive context for decomposition 
+    strategy development. Review the requirements inventory from the previous task 
+    and use the knowledge repository to understand system context.
+    
+    Actions:
+    1. Extract system architecture and subsystem boundaries
+    2. Identify interface specifications and constraints
+    3. Review applicable standards and best practices
+    4. Map requirements to architectural components
+    5. Create context framework for decomposition
+    
+    Use the requirements inventory from the previous task as input for analysis.
+  expected_output: >
+    Context analysis report containing:
+    - System architecture overview with subsystem boundaries
+    - Interface specifications and constraints
+    - Applicable standards checklist
+    - Initial requirement-to-architecture mapping
+    - Decomposition strategy recommendations
+  agent: decomposition_strategist
+  output_file: 'context_analysis.md'
+
+strategy_development_task:
+  description: >
+    Develop comprehensive decomposition strategy based on architecture analysis 
+    and requirements inventory. Use the context analysis and requirements inventory 
+    from previous tasks to inform strategy development.
+    
+    Actions:
+    1. Select optimal decomposition approach (functional/architectural/hybrid)
+    2. Define subsystem allocation rules and criteria
+    3. Create requirement templates for each subsystem
+    4. Establish validation criteria and quality gates
+    5. Plan decomposition workflow and dependencies
+    
+    Review the context analysis and requirements inventory from previous tasks.
+  expected_output: >
+    Decomposition strategy document containing:
+    - Decomposition methodology and rationale
+    - Subsystem allocation rules and criteria
+    - Requirement templates by subsystem type
+    - Validation criteria and quality gates
+    - Execution workflow plan
+  agent: decomposition_strategist
+  output_file: 'decomposition_strategy.md'
+
+functional_decomposition_task:
+  description: >
+    Decompose functional requirements into subsystem-level requirements following 
+    the established strategy. Use the decomposition strategy from the previous task 
+    to guide functional requirement allocation.
+    
+    Actions:
+    1. Apply functional decomposition methodology
+    2. Allocate functions to appropriate subsystems
+    3. Ensure functional completeness and non-overlap
+    4. Create detailed functional requirement statements
+    5. Maintain traceability to parent requirements
+    
+    Follow the decomposition strategy from the previous task.
+  expected_output: >
+    Functional subsystem requirements containing:
+    - Complete set of subsystem functional requirements
+    - Functional allocation matrix
+    - Traceability links to parent requirements
+    - Functional coverage verification
+    - Initial quality assessment
+  agent: requirements_engineer
+  output_file: 'functional_requirements.md'
+
+nonfunctional_decomposition_task:
+  description: >
+    Decompose and allocate non-functional requirements to subsystems. Use the 
+    decomposition strategy and functional requirements from previous tasks to 
+    guide non-functional requirement allocation.
+    
+    Actions:
+    1. Identify system-level performance, reliability, security requirements
+    2. Allocate performance budgets and quality attributes to subsystems
+    3. Create measurable acceptance criteria
+    4. Ensure requirements are testable and verifiable
+    5. Document allocation rationale and assumptions
+    
+    Review the decomposition strategy and functional requirements from previous tasks.
+  expected_output: >
+    Non-functional subsystem requirements containing:
+    - Performance budget allocations by subsystem
+    - Quality attribute requirements with acceptance criteria
+    - Measurable and testable requirement statements
+    - Traceability to parent non-functional requirements
+    - Verification approach recommendations
+  agent: requirements_engineer
+  output_file: 'nonfunctional_requirements.md'
+
+interface_definition_task:
+  description: >
+    Define subsystem interfaces and data flows based on ICD and decomposed 
+    functional requirements. Use the functional and non-functional requirements 
+    from previous tasks to inform interface definitions.
+    
+    Actions:
+    1. Extract interface specifications from ICD and architecture
+    2. Define data flows between subsystems
+    3. Create interface requirement statements
+    4. Specify protocols, formats, and timing constraints
+    5. Ensure interface completeness and consistency
+    
+    Review the functional and non-functional requirements from previous tasks.
+  expected_output: >
+    Interface requirements containing:
+    - Complete interface specifications for each subsystem
+    - Data flow diagrams and descriptions
+    - Protocol and format specifications
+    - Timing and performance constraints
+    - Interface consistency verification
+  agent: requirements_engineer
+  output_file: 'interface_requirements.md'
+
+traceability_task:
+  description: >
+    Create comprehensive traceability matrices linking all parent requirements 
+    to decomposed subsystem requirements. Use all decomposed requirements from 
+    the previous functional, non-functional, and interface tasks.
+    
+    Actions:
+    1. Build traceability matrix (parent to child requirements)
+    2. Verify complete coverage of parent requirements
+    3. Identify gaps, overlaps, or missing allocations
+    4. Generate traceability reports and metrics
+    5. Create change impact assessment framework
+    
+    Review all decomposed requirements from previous tasks to build traceability.
+  expected_output: >
+    Traceability documentation containing:
+    - Complete traceability matrix (parent-to-child)
+    - Coverage analysis with gap identification
+    - Overlap analysis and resolution recommendations
+    - Traceability metrics and quality assessment
+    - Change impact assessment procedures
+  agent: quality_assurance_agent
+  output_file: 'traceability_matrix.md'
+
+quality_validation_task:
+  description: >
+    Validate all decomposed requirements against quality standards and compliance requirements.
+    Use all requirements from previous tasks and the traceability matrix to perform validation.
+    
+    Actions:
+    1. Check requirement quality (clear, testable, unambiguous)
+    2. Validate against applicable standards and best practices
+    3. Verify compliance with regulatory requirements
+    4. Assess requirement completeness and consistency
+    5. Generate quality improvement recommendations
+    
+    Review all requirements and traceability matrix from previous tasks.
+  expected_output: >
+    Quality assurance report containing:
+    - Quality assessment for each requirement
+    - Standards and regulatory compliance verification
+    - Issue identification with severity ratings
+    - Quality metrics and scoring
+    - Improvement recommendations and action items
+  agent: quality_assurance_agent
+  output_file: 'quality_validation_report.md'
+
+documentation_task:
+  description: >
+    Create professional requirement documents and deliverable packages for stakeholders.
+    Use the quality validated requirements, traceability documentation, and quality reports 
+    from all previous tasks to create comprehensive documentation.
+    
+    Actions:
+    1. Apply consistent formatting and numbering schemes
+    2. Generate subsystem requirement documents
+    3. Create executive summary and overview documentation
+    4. Compile traceability matrices and quality reports
+    5. Package all deliverables for stakeholder distribution
+    
+    Review quality validated requirements, traceability documentation, and quality reports from all previous tasks.
+  expected_output: >
+    Professional documentation package containing:
+    - Formatted subsystem requirement documents
+    - Executive summary with key metrics
+    - Complete traceability matrices
+    - Quality and compliance reports
+    - Stakeholder presentation materials
+    - Implementation guidance documents
+  agent: documentation_specialist
+  output_file: 'requirements_decomposition_report.md'

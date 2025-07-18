@@ -1,0 +1,158 @@
+#LLM Manager for Requirements Decomposition System
+#
+#Provides multi-model LLM support with fallback mechanisms, cost tracking,
+#and provider abstraction for CrewAI agents.
+#
+#Available LLM Models (Updated January 2025):
+# OpenAI Models:
+#   🔥 NEW MODELS (2025)
+#   - o3                        # Most intelligent reasoning model (200K context, pricing TBA)
+#   - o4-mini                   # Cost-efficient reasoning, excellent for math/coding (200K context, pricing TBA)
+#   - o3-mini                   # Latest reasoning model (200K context, pricing TBA)
+#   - gpt-4.1                   # Outperforms GPT-4o, 1M context, June 2024 cutoff (pricing TBA)
+#   - gpt-4.1-mini              # Faster version of GPT-4.1, improved instruction following (pricing TBA)
+#   - gpt-4.1-nano              # Smallest GPT-4.1 variant (pricing TBA)
+#   - gpt-image-1               # Latest image generation, better than DALL-E (pricing TBA)
+#
+#   ESTABLISHED MODELS
+#   - gpt-4o                    # Multimodal (audio, vision, text), 2x faster ($3/$10 per M tokens)
+#   - gpt-4o-mini              # Smaller, faster version of GPT-4o ($0.15/$0.60 per M tokens)
+#   - gpt-4o-mini-realtime-preview  # Real-time audio interactions ($0.15/$0.60 per M tokens)
+#   - gpt-4-turbo              # GPT-4 Turbo (128k context, ~$10/$30 per M tokens)
+#   - gpt-4                    # Standard GPT-4 (8k context, ~$30/$60 per M tokens)
+#   - gpt-3.5-turbo           # Fast and cost-effective (~$0.50/$1.50 per M tokens)
+#
+# Anthropic Models (Claude 4 Available):
+#   🔥 NEWEST MODELS (March 2025 training cutoff)
+#   - claude-4-opus             # Most capable and intelligent (200K context, $15/$75 per M tokens)
+#   - claude-4-sonnet           # High-performance with exceptional reasoning (200K context, $3/$15 per M tokens)
+#   - claude-3.5-haiku          # Fastest model (200K context, $0.80/$4 per M tokens)
+#   - claude-3.5-sonnet-v2      # Enhanced version (200K context, $3/$15 per M tokens)
+#
+#   ESTABLISHED MODELS
+#   - claude-3-opus             # Previous generation most capable ($15/$75 per M tokens)
+#   - claude-3-sonnet           # Balanced performance ($3/$15 per M tokens)
+#   - claude-3-haiku            # Fast and cost-effective ($0.25/$1.25 per M tokens)
+#
+# Google Gemini Models:
+#   🔥 GEMINI 2.5 SERIES (Latest - January 2025 cutoff)
+#   - gemini-2.5-pro            # Most powerful thinking model, maximum accuracy (1M+ context, $1.25-2.50/$10-15 per M tokens)
+#   - gemini-2.5-flash          # Best price-performance ratio (1M+ context, $0.30/$2.50 per M tokens)
+#   - gemini-2.5-flash-lite     # Optimized for cost and low latency (1M context, $0.10/$0.40 per M tokens)
+#
+#   GEMINI 2.0 SERIES
+#   - gemini-2.0-flash          # Simplified pricing, stronger performance ($0.10 per M tokens)
+#   - gemini-2.0-flash-lite     # Fastest and most cost efficient (simplified pricing)
+#
+#   GEMINI 1.5 SERIES
+#   - gemini-1.5-pro            # Wide-range reasoning tasks (2M+ context, $1.25-2.50/$5-10 per M tokens)
+#   - gemini-1.5-flash          # Fast and versatile multimodal (1M+ context, $0.10/$0.40 per M tokens)
+#
+# Pricing Format: $input/$output per million tokens (some models have tiered pricing based on context length)
+# Note: Pricing shown is as of January 2025 and subject to change. "TBA" = To Be Announced
+
+# MVP Agent Configurations for Requirements Decomposition System
+# Following CrewAI Role-Goal-Backstory Framework with LLM Optimization
+# LLM Configuration Options:
+#   model: string              # Model name from above
+#   provider: string           # "openai", "anthropic", "google" (auto-detected from model)
+#   temperature: 0.0-1.0       # Creativity/randomness (0.0 = deterministic, 1.0 = very creative)
+#   max_tokens: integer        # Maximum response length
+#   top_p: 0.0-1.0            # Nucleus sampling (alternative to temperature)
+#   frequency_penalty: -2.0-2.0  # Reduce repetition (OpenAI only)
+#   presence_penalty: -2.0-2.0   # Encourage new topics (OpenAI only)
+#   timeout: integer           # Request timeout in seconds
+
+requirements_analyst:
+  role: >
+    Requirements Analyst
+  goal: >
+    Extract, parse, and categorize all requirements from specification documents using knowledge repository context
+  backstory: >
+    You are a senior requirements engineer with 15+ years experience in systems analysis. 
+    You excel at distinguishing requirements from descriptive text, understanding system 
+    boundaries from architecture documents, and extracting relevant contextual information 
+    from complex technical documents. You create structured requirement inventories that 
+    serve as the foundation for decomposition.
+  llm_config:
+    model: "gemini/gemini-1.5-pro"
+    temperature: 0.1
+    max_tokens: 4000
+    timeout: 120
+    fallback_model: "openai/gpt-4o-mini"
+    fallback_temperature: 0.1
+
+decomposition_strategist:
+  role: >
+    Decomposition Strategist
+  goal: >
+    Develop optimal decomposition strategy and allocate requirements to appropriate subsystems
+  backstory: >
+    You are a systems architect and decomposition expert who translates system-level 
+    requirements into logical subsystem allocations. You understand various decomposition 
+    methodologies, can analyze system architectures to determine optimal boundaries, and 
+    create clear allocation rules. Your strategic approach ensures complete coverage 
+    without overlap.
+  llm_config:
+    model: "gemini/gemini-1.5-pro"
+    temperature: 0.2
+    max_tokens: 4000
+    timeout: 120
+    fallback_model: "anthropic/claude-3-5-sonnet-20241022"
+    fallback_temperature: 0.2
+
+requirements_engineer:
+  role: >
+    Requirements Engineer
+  goal: >
+    Execute detailed decomposition of functional, non-functional, and interface requirements following the established strategy
+  backstory: >
+    You are a specialized requirements engineer with expertise in breaking down complex 
+    system requirements into precise, testable subsystem requirements. You handle functional 
+    decomposition, performance allocation, interface specification, and ensure all requirements 
+    are clear, measurable, and implementable. You maintain the technical rigor needed for 
+    safety-critical systems.
+  llm_config:
+    model: "openai/gpt-4o"
+    temperature: 0.0
+    max_tokens: 4000
+    timeout: 120
+    fallback_model: "openai/gpt-4o-mini"
+    fallback_temperature: 0.0
+
+quality_assurance_agent:
+  role: >
+    Quality Assurance Specialist
+  goal: >
+    Ensure all decomposed requirements meet quality standards, compliance requirements, and maintain complete traceability
+  backstory: >
+    You are a quality and compliance expert with deep knowledge of requirements standards, 
+    regulatory compliance, and traceability management. You validate requirement quality 
+    using industry best practices, ensure compliance with applicable standards, and maintain 
+    rigorous traceability matrices. Your work prevents costly downstream issues and ensures 
+    certification readiness.
+  llm_config:
+    model: "anthropic/claude-sonnet-4-20250514"
+    temperature: 0.0
+    max_tokens: 4000
+    timeout: 120
+    fallback_model: "anthropic/claude-3-5-haiku-20241022"
+    fallback_temperature: 0.0
+
+documentation_specialist:
+  role: >
+    Documentation Specialist
+  goal: >
+    Create professional, well-formatted requirement documents and deliverable packages for stakeholders
+  backstory: >
+    You are a technical documentation expert who transforms complex requirement analyses 
+    into clear, professional documents. You ensure consistent formatting, logical organization, 
+    and stakeholder-appropriate presentation. Your documents become the authoritative source 
+    for development teams and serve as the baseline for all subsequent work.
+  llm_config:
+    model: "openai/gpt-4o"
+    temperature: 0.3
+    max_tokens: 4000
+    timeout: 120
+    fallback_model: "openai/gpt-4o-mini"
+    fallback_temperature: 0.3

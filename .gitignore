@@ -1,0 +1,71 @@
+# Environment files
+requirement_dev/.env
+.env
+
+# Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+*.log
+
+# AI/ML specific
+*.pkl
+*.model
+wandb/
+mlruns/
+
+# Project specific
+CLAUDE.md
+terminal_convos/
+.claude/
